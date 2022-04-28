@@ -7,28 +7,29 @@ import {
 	Text,
 	View,
 } from "react-native"
-import variables from "../style/variables"
+import colors from "../../style/colors"
+import variables from "../../style/variables"
 
 type Props = {
 	type: "primary" | "secondary"
-	color?: ColorValue | null | undefined
+	textColor?: ColorValue | null | undefined
 	onPress?: null | ((event: GestureResponderEvent) => void) | undefined
 	title?: string
 }
 
-const Button: React.FC<Props> = ({ type, color, children }) => {
-	const styleProps = { color: color ? color : undefined }
-
-	const pressHandler = () => {
-		console.log("Pressed!")
-	}
+const Button: React.FC<Props> = ({ type, textColor, onPress, children }) => {
+	const styleProps = { color: textColor ? textColor : undefined }
 
 	return (
 		<View style={styles.outerContainer}>
 			<Pressable
-				style={styles.innerContainer}
-				onPress={pressHandler}
-				android_ripple={{ color: variables.primaryColor }}
+				style={({ pressed }) =>
+					pressed
+						? [styles.pressed, styles.innerContainer]
+						: styles.innerContainer
+				}
+				onPress={onPress}
+				android_ripple={{ color: colors.primaryColor }}
 			>
 				<Text style={[styles.text, styleProps]}>{children}</Text>
 			</Pressable>
@@ -40,16 +41,20 @@ export default Button
 
 const styles = StyleSheet.create({
 	outerContainer: {
+		flex: 1,
 		margin: 4,
 		borderRadius: 6,
 		overflow: "hidden",
 	},
 	innerContainer: {
-		backgroundColor: variables.primaryColorDarker,
+		backgroundColor: colors.primaryColorDarker,
 		justifyContent: "center",
 		paddingVertical: 12,
 		...variables.iosShadow,
 		...variables.androidShadow,
 	},
-	text: { textAlign: "center" },
+	text: { textAlign: "center", color: colors.black },
+	pressed: {
+		opacity: 0.75,
+	},
 })
