@@ -2,10 +2,13 @@ import { Image, StyleSheet, Text, View } from "react-native"
 import React from "react"
 import H1 from "../components/ui/H1"
 import colors from "../style/colors"
+import Button from "../components/ui/Button"
 
-type Props = {}
+type Props = {
+	restartGameHandler: () => void
+}
 
-const GameOverScreen: React.FC<Props> = ({}) => {
+const GameOverScreen: React.FC<Props> = ({ restartGameHandler }) => {
 	return (
 		<View style={styles.container}>
 			<H1 style={styles.mainTitle}>
@@ -17,6 +20,15 @@ const GameOverScreen: React.FC<Props> = ({}) => {
 					style={styles.image}
 					source={require("../assets/images/success.png")}
 				></Image>
+			</View>
+			<View style={styles.buttonContainer}>
+				<Button
+					type="primary"
+					textColor="white"
+					onPress={restartGameHandler}
+				>
+					Confirm
+				</Button>
 			</View>
 		</View>
 	)
@@ -46,5 +58,8 @@ const styles = StyleSheet.create({
 	image: {
 		width: "100%",
 		height: "100%",
+	},
+	buttonContainer: {
+		flexDirection: "row",
 	},
 })

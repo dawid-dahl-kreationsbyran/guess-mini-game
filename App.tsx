@@ -27,6 +27,10 @@ const App = () => {
 		setIsGameOver(false)
 	}
 
+	const restartGameHandler = () => {
+		setPickedNumber(null)
+	}
+
 	const gameOverHandler = () => {
 		setIsGameOver(true)
 	}
@@ -43,7 +47,7 @@ const App = () => {
 	}
 
 	if (isGameOver && pickedNumber) {
-		screen = <GameOverScreen />
+		screen = <GameOverScreen restartGameHandler={restartGameHandler} />
 	}
 
 	return (
