@@ -47,9 +47,6 @@ const GameScreen: React.FC<Props> = ({ pickedNumber, gameOverHandler }) => {
 			minBoundary = 0
 			maxBoundary = 100
 		}
-
-		console.log("min ", minBoundary)
-		console.log("max ", maxBoundary)
 	}, [currentGuess, pickedNumber])
 
 	const nextGuessHandler = (direction: "lower" | "greater") => {
