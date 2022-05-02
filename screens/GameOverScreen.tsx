@@ -1,4 +1,12 @@
-import { Image, StyleSheet, Text, View, Dimensions } from "react-native"
+import {
+	Image,
+	StyleSheet,
+	Text,
+	View,
+	Dimensions,
+	useWindowDimensions,
+	ScrollView,
+} from "react-native"
 import React from "react"
 import H1 from "../components/ui/H1"
 import colors from "../style/colors"
@@ -9,30 +17,46 @@ type Props = {
 }
 
 const GameOverScreen: React.FC<Props> = ({ restartGameHandler }) => {
+	const { width, height } = useWindowDimensions()
+
+	let imageSize = {
+		width: 300,
+		height: 300,
+	}
+
+	if (height < 500) {
+		imageSize = {
+			width: 150,
+			height: 150,
+		}
+	}
+
 	return (
-		<View style={styles.container}>
-			<H1 style={styles.mainTitle}>
-				<Text style={styles.titleSpan}>G</Text>ame{" "}
-				<Text style={styles.titleSpan}>O</Text>ver!
-			</H1>
-			<View style={styles.imageWrapper}>
-				<View style={styles.imageContainer}>
-					<Image
-						style={styles.image}
-						source={require("../assets/images/success.png")}
-					></Image>
+		<ScrollView style={styles.screen}>
+			<View style={styles.container}>
+				<H1 style={styles.mainTitle}>
+					<Text style={styles.titleSpan}>G</Text>ame{" "}
+					<Text style={styles.titleSpan}>O</Text>ver!
+				</H1>
+				<View style={styles.imageWrapper}>
+					<View style={[styles.imageContainer, imageSize]}>
+						<Image
+							style={styles.image}
+							source={require("../assets/images/success.png")}
+						></Image>
+					</View>
+				</View>
+				<View style={styles.buttonContainer}>
+					<Button
+						type="primary"
+						textColor="white"
+						onPress={restartGameHandler}
+					>
+						Restart
+					</Button>
 				</View>
 			</View>
-			<View style={styles.buttonContainer}>
-				<Button
-					type="primary"
-					textColor="white"
-					onPress={restartGameHandler}
-				>
-					Confirm
-				</Button>
-			</View>
-		</View>
+		</ScrollView>
 	)
 }
 
@@ -41,6 +65,9 @@ export default GameOverScreen
 const deviceWidth = Dimensions.get("window").width
 
 const styles = StyleSheet.create({
+	screen: {
+		height: "100%",
+	},
 	container: {},
 	mainTitle: {
 		color: "white",

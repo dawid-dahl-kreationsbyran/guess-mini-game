@@ -4,6 +4,10 @@ import {
 	View,
 	TextInput,
 	GestureResponderEvent,
+	KeyboardAvoidingView,
+	ScrollView,
+	Text,
+	Platform,
 } from "react-native"
 import variables from "../style/variables"
 import React, { useState } from "react"
@@ -12,6 +16,7 @@ import global from "../style/global"
 import Button from "../components/ui/Button"
 import H1 from "../components/ui/H1"
 import Paragraph from "../components/ui/Paragraph"
+import { StatusBar } from "expo-status-bar"
 
 type Props = {
 	pickedNumberHandler: (pickedNumber: number) => void
@@ -46,40 +51,54 @@ const StartGameScreen: React.FC<Props> = ({ pickedNumberHandler }) => {
 
 	const resetInputHandler = () => setEnteredNumber("")
 
+	let OS = "iOS"
+
+	if (Platform.OS === "android") {
+		OS = "android"
+	}
+
 	return (
-		<View style={[styles.wrapper, global.wrapper]}>
-			<H1 style={styles.mainTitle}>Guess My Number</H1>
-			<View style={styles.container}>
-				<View style={styles.inputContainer}>
-					<Paragraph style={styles.helperText}>
-						Enter a number!
-					</Paragraph>
-					<TextInput
-						style={styles.textInput}
-						maxLength={2}
-						keyboardType="number-pad"
-						onChangeText={numberInputHandler}
-						value={enteredNumber}
-					/>
-				</View>
-				<View style={styles.buttonContainer}>
-					<Button
-						type="primary"
-						textColor="white"
-						onPress={confirmInputHandler}
-					>
-						Confirm
-					</Button>
-					<Button
-						type="primary"
-						textColor="white"
-						onPress={resetInputHandler}
-					>
-						Reset
-					</Button>
-				</View>
-			</View>
-		</View>
+		<>
+			<StatusBar style="light" />
+			<ScrollView>
+				<KeyboardAvoidingView behavior="position">
+					<View style={[styles.wrapper, global.wrapper]}>
+						<H1 style={styles.mainTitle}>Guess My Number</H1>
+						<View style={styles.container}>
+							<View style={styles.inputContainer}>
+								<Paragraph style={styles.helperText}>
+									Enter a number!
+								</Paragraph>
+								<TextInput
+									style={styles.textInput}
+									maxLength={2}
+									keyboardType="number-pad"
+									onChangeText={numberInputHandler}
+									value={enteredNumber}
+								/>
+							</View>
+							<View style={styles.buttonContainer}>
+								<Button
+									type="primary"
+									textColor="white"
+									onPress={confirmInputHandler}
+								>
+									Confirm
+								</Button>
+								<Button
+									type="primary"
+									textColor="white"
+									onPress={resetInputHandler}
+								>
+									Reset
+								</Button>
+							</View>
+						</View>
+					</View>
+					<Text style={styles.osText}>This app runs on: {OS}</Text>
+				</KeyboardAvoidingView>
+			</ScrollView>
+		</>
 	)
 }
 
@@ -88,6 +107,7 @@ export default StartGameScreen
 const styles = StyleSheet.create({
 	wrapper: {
 		borderRadius: 8,
+		marginBottom: 24,
 	},
 	mainTitle: {
 		color: "white",
@@ -122,5 +142,11 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		flexDirection: "row",
+	},
+	osText: {
+		color: Platform.select({
+			ios: "white",
+			android: "black",
+		}),
 	},
 })

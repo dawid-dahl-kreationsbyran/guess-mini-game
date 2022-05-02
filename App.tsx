@@ -1,5 +1,10 @@
 import { StatusBar } from "expo-status-bar"
-import { ImageBackground, StyleSheet, SafeAreaView } from "react-native"
+import {
+	ImageBackground,
+	StyleSheet,
+	SafeAreaView,
+	useWindowDimensions,
+} from "react-native"
 import StartGameScreen from "./screens/StartGameScreen"
 import { LinearGradient } from "expo-linear-gradient"
 import { useState } from "react"
@@ -12,6 +17,10 @@ import AppLoading from "expo-app-loading"
 const App = () => {
 	const [pickedNumber, setPickedNumber] = useState<number | null>(null)
 	const [isGameOver, setIsGameOver] = useState(true)
+
+	const { width, height } = useWindowDimensions()
+
+	const marginTopDistance = height < 420 ? 0 : 32
 
 	const [fontsLoaded] = useFonts({
 		"open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
@@ -62,7 +71,12 @@ const App = () => {
 				imageStyle={styles.backgroundImage}
 			>
 				<StatusBar style="auto" />
-				<SafeAreaView style={styles.safeAreaView}>
+				<SafeAreaView
+					style={[
+						styles.safeAreaView,
+						{ marginTop: marginTopDistance },
+					]}
+				>
 					{screen}
 				</SafeAreaView>
 			</ImageBackground>
@@ -72,7 +86,6 @@ const App = () => {
 
 const styles = StyleSheet.create({
 	safeAreaView: {
-		marginVertical: 32,
 		marginHorizontal: 16,
 	},
 	container: {
